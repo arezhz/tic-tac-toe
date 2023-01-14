@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Tic Tac Toe</title>
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <div class="main-box">
+            <div class="game-board">
+                <div class="game-square" *ngFor="let item of board; let index= index" (click)="changeHandler(index)"
+                    [ngClass]="{'rotate': item.status !== null}">
+                    <span class="empty-square"></span>
+                    <span class="shape-square">
+                        <img *ngIf="item.status === 'X'" src="../assets/images/X.png" alt="X">
+                        <img *ngIf="item.status === 'O'" src="../assets/images/O.png" alt="O">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
