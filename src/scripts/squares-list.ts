@@ -8,7 +8,6 @@ class SquaresList {
     }
 
     constructor() {
-        debugger
         this._boards = [
             {status: null},
             {status: null},
@@ -23,7 +22,6 @@ class SquaresList {
     }
 
     setBoards(value: 'X' | 'O', index: number) {
-        debugger
         this._boards[index].status = value;
     }
 
