@@ -1,10 +1,13 @@
-import SquaresList from "./squares-list";
-
 class Core {
+    gameBoard: any;
+
+    constructor(boardList: any) {
+        this.gameBoard = boardList;
+    }
 
     botTurn() {
-        const gameBoard = new SquaresList();
-        const boards = gameBoard.boards;
+        const boards = this.gameBoard.boards;
+        console.log(boards)
     }
 }
 
