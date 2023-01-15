@@ -5,7 +5,7 @@ import O from '../assets/images/O.png';
 
 
 class CreateGameBoard {
-    boards: IBoardsDto[];
+    private readonly boards: IBoardsDto[];
 
     constructor() {
         this.boards = new SquaresList().boards;

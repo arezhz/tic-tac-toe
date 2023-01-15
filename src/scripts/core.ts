@@ -1,9 +1,9 @@
-import CreateGameBoard from './create-game-board';
+import SquaresList from "./squares-list";
 
 class Core {
 
     botTurn() {
-        const gameBoard = new CreateGameBoard();
+        const gameBoard = new SquaresList();
         const boards = gameBoard.boards;
     }
 }
