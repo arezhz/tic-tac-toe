@@ -16,12 +16,22 @@ class Core {
             if (boardsLength === 1) {
                 if (boards[4].status === null) {
                     this.changeDocument(4);
-                } else if (boards[2].status === null) {
-                    this.changeDocument(2);
                 } else {
-                    this.changeDocument(8);
+                    this.changeDocument(2);
                 }
-            } else if(boardsLength === 3) {
+            } else if(boardsLength === 3 &&
+              ((boards[0].status === 'X' && boards[8].status === 'X') ||
+                (boards[2].status === 'X' && boards[6].status === 'X'))
+            ) {
+                let isNull = false;
+                do {
+                    const rndNumber= Math.floor(Math.random() * 8);
+                    if(boards[rndNumber].status === null) {
+                        isNull = true;
+                        this.changeDocument(rndNumber);
+                    }
+                } while(!isNull)
+            } else {
 
             }
         }, 1000)
