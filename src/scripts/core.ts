@@ -13,17 +13,18 @@ class Core {
         const boardsLength = boards.filter((f: IBoardsDto) => f.status !== null).length;
 
         setTimeout(() => {
-
             if (boardsLength === 1) {
                 if (boards[4].status === null) {
                     this.changeDocument(4);
                 } else if (boards[2].status === null) {
-                    this.changeDocument(4);
+                    this.changeDocument(2);
                 } else {
                     this.changeDocument(8);
                 }
+            } else if(boardsLength === 3) {
+
             }
-        }, 2000)
+        }, 1000)
     }
 
     changeDocument(index: number) {
