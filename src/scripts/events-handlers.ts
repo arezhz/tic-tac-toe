@@ -1,3 +1,5 @@
+import Core from './core';
+
 export let userTurn = true;
 
 export const clickHandler = (event: Event) => {
@@ -6,5 +8,8 @@ export const clickHandler = (event: Event) => {
         const colNumber = Number((event.currentTarget as any).dataset.col);
         const el = document.getElementById(`square-${colNumber}`);
         el.classList.add('rotate-left');
+
+        const core = new Core();
+        core.botTurn()
     }
 }

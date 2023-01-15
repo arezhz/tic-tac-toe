@@ -1,22 +1,14 @@
-import {IBoardsDto} from '../models/i-boards.dto';
+import {IBoardsDto} from "../models/i-boards.dto";
+import SquaresList from "./squares-list";
 import X from '../assets/images/X.png';
 import O from '../assets/images/O.png';
+
 
 class CreateGameBoard {
     boards: IBoardsDto[];
 
     constructor() {
-        this.boards = [
-            {status: null},
-            {status: null},
-            {status: null},
-            {status: null},
-            {status: null},
-            {status: null},
-            {status: null},
-            {status: null},
-            {status: null}
-        ]
+        this.boards = new SquaresList().boards;
     }
 
     init() {
