@@ -19,18 +19,6 @@ class Core {
                 } else {
                     this.changeDocument(2);
                 }
-            } else if (boardsLength === 3 &&
-                ((boards[0].status === 'X' && boards[8].status === 'X') ||
-                    (boards[2].status === 'X' && boards[6].status === 'X'))
-            ) {
-                let isNull = false;
-                do {
-                    const rndNumber = Math.floor(Math.random() * 8);
-                    if (boards[rndNumber].status === null) {
-                        isNull = true;
-                        this.changeDocument(rndNumber);
-                    }
-                } while (!isNull)
             } else {
                 debugger
                 let checkCross = true;
@@ -56,6 +44,17 @@ class Core {
                         }
                     }
                 }
+                if (checkCross) {
+                    let isNull = false;
+                    do {
+                        const rndNumber = Math.floor(Math.random() * 8);
+                        if (boards[rndNumber].status === null) {
+                            isNull = true;
+                            this.changeDocument(rndNumber);
+                        }
+                    } while (!isNull)
+                }
+
             }
         }, 1000)
     }
@@ -67,48 +66,27 @@ class Core {
     }
 
     core(index: number, player: 'X' | 'O') {
-        const boards = this.gameBoard.boards;
-        if (boards[0].status === player) {
-            const winList = [
-                [1, 2],
-                [3, 6],
-                [4, 8],
-            ]
-            const result = winList.find(f => f.includes(index));
-            return this.checkEqually(winList, result, player);
-
-        } else if (boards[4].status === player) {
-            const winList = [
-                [0, 8],
-                [1, 7],
-                [2, 6],
-                [3, 5],
-            ]
-            const result = winList.find(f => f.includes(index));
-            return this.checkEqually(winList, result, player);
-
-        } else if (boards[8].status === player) {
-            const winList = [
-                [5, 2],
-                [6, 7],
-            ]
-            const result = winList.find(f => f.includes(index));
-            return this.checkEqually(winList, result, player);
-        }
-        return false;
-    }
-
-    checkEqually(winList: number[][], items: number[], player: 'X' | 'O') {
-        if (items) {
-            if (this.gameBoard.boards[items[0]].status === player ||
-                this.gameBoard.boards[items[1]].status === player
-               ) {
-                return true
-            } else if( this.gameBoard.boards[items[0]].status === this.gameBoard.boards[items[1]].status) {
-                return true
+        const boards = JSON.parse(JSON.stringify(this.gameBoard.boards));
+        const winList = [
+            [0, 1, 2],
+            [0, 3, 6],
+            [0, 4, 8],
+            [1, 4, 7],
+            [2, 4, 6],
+            [3, 4, 5],
+            [2, 5, 8],
+            [6, 7, 8],
+        ];
+        boards[index].status = player;
+        const result = winList.filter(f => f.includes(index));
+        for (let i = 0; i < result.length; i++) {
+            if (boards[result[i][0]].status === player &&
+                boards[result[i][1]].status === player &&
+                boards[result[i][2]].status === player) {
+                return true;
             }
         }
-        return false
+        return false;
     }
 }
 
