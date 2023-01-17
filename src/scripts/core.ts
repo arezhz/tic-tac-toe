@@ -1,9 +1,11 @@
 import {IBoardsDto} from "../models/i-boards.dto";
 import {IGameResultType} from "../models/i-game-result.type";
+import {IGameResultHistoryDto} from "../models/i-game-result-history.dto";
 
 class Core {
     gameBoard: any;
     userTurn = true;
+    userStart = true;
     gameResult: IGameResultType = null;
     gameOver = false;
     winList = [
@@ -16,6 +18,10 @@ class Core {
         [2, 5, 8],
         [6, 7, 8],
     ];
+    gameResultHistory: IGameResultHistoryDto = {
+        O: 0,
+        X: 0
+    }
 
     constructor(boardList: any) {
         this.gameBoard = boardList;
@@ -26,7 +32,7 @@ class Core {
         const boardsLength = boards.filter((f: IBoardsDto) => f.status !== null).length;
 
         setTimeout(() => {
-            if (boardsLength === 1) {
+            if (boardsLength <= 1) {
                 if (boards[4].status === null) {
                     this.changeDocument(4);
                 } else {
@@ -81,12 +87,16 @@ class Core {
     }
 
     winCheckHandler() {
-        debugger
         this.winList.forEach(f => {
             if (this.gameBoard.boards[f[0]].status !== null &&
                 this.gameBoard.boards[f[0]].status === this.gameBoard.boards[f[1]].status &&
                 this.gameBoard.boards[f[0]].status === this.gameBoard.boards[f[2]].status) {
                 this.gameResult = this.gameBoard.boards[f[0]].status === 'X' ? 'XWin' : 'OWin';
+                if (this.gameBoard.boards[f[0]].status === 'X') {
+                    this.gameResultHistory['X'] += 1;
+                } else {
+                    this.gameResultHistory['O'] += 1;
+                }
                 this.gameOver = true;
             }
         })
