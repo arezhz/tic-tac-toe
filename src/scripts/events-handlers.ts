@@ -5,12 +5,14 @@ const boardsList = new SquaresList();
 const core = new Core(boardsList);
 
 export const clickHandler = (event: Event) => {
-    if (core.userTurn) {
-        core.userTurn = false;
+    if (core.userTurn && !core.gameOver) {
         const colNumber = Number((event.currentTarget as any).dataset.col);
-        const el = document.getElementById(`square-${colNumber}`);
-        el.classList.add('rotate-left');
-        boardsList.setBoards('X', colNumber);
-        core.botTurn()
+        if (boardsList.boards[colNumber].status === null) {
+            core.userTurn = false;
+            const el = document.getElementById(`square-${colNumber}`);
+            el.classList.add('rotate-left');
+            boardsList.setBoards('X', colNumber);
+            core.botTurn()
+        }
     }
 }

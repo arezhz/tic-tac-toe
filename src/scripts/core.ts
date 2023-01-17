@@ -1,8 +1,21 @@
 import {IBoardsDto} from "../models/i-boards.dto";
+import {IGameResultType} from "../models/i-game-result.type";
 
 class Core {
     gameBoard: any;
     userTurn = true;
+    gameResult: IGameResultType = null;
+    gameOver = false;
+    winList = [
+        [0, 1, 2],
+        [0, 3, 6],
+        [0, 4, 8],
+        [1, 4, 7],
+        [2, 4, 6],
+        [3, 4, 5],
+        [2, 5, 8],
+        [6, 7, 8],
+    ];
 
     constructor(boardList: any) {
         this.gameBoard = boardList;
@@ -20,7 +33,6 @@ class Core {
                     this.changeDocument(2);
                 }
             } else {
-                debugger
                 let checkCross = true;
                 for (let i = 0; i < boards.length; i++) {
                     if (boards[i].status === null) {
@@ -44,7 +56,10 @@ class Core {
                         }
                     }
                 }
-                if (checkCross) {
+                this.winCheckHandler();
+                console.log(this.gameOver);
+                console.log(this.gameResult);
+                if (checkCross && this.gameResult === null) {
                     let isNull = false;
                     do {
                         const rndNumber = Math.floor(Math.random() * 8);
@@ -65,20 +80,29 @@ class Core {
         this.userTurn = true;
     }
 
+    winCheckHandler() {
+        debugger
+        this.winList.forEach(f => {
+            if (this.gameBoard.boards[f[0]].status !== null &&
+                this.gameBoard.boards[f[0]].status === this.gameBoard.boards[f[1]].status &&
+                this.gameBoard.boards[f[0]].status === this.gameBoard.boards[f[2]].status) {
+                this.gameResult = this.gameBoard.boards[f[0]].status === 'X' ? 'XWin' : 'OWin';
+                this.gameOver = true;
+            }
+        })
+
+        const gameOver = this.gameBoard.boards.every((e: IBoardsDto) => e.status !== null);
+        if (gameOver && this.gameResult === null) {
+            this.gameResult = 'Draw';
+            this.gameOver = true;
+        }
+
+    }
+
     core(index: number, player: 'X' | 'O') {
         const boards = JSON.parse(JSON.stringify(this.gameBoard.boards));
-        const winList = [
-            [0, 1, 2],
-            [0, 3, 6],
-            [0, 4, 8],
-            [1, 4, 7],
-            [2, 4, 6],
-            [3, 4, 5],
-            [2, 5, 8],
-            [6, 7, 8],
-        ];
         boards[index].status = player;
-        const result = winList.filter(f => f.includes(index));
+        const result = this.winList.filter(f => f.includes(index));
         for (let i = 0; i < result.length; i++) {
             if (boards[result[i][0]].status === player &&
                 boards[result[i][1]].status === player &&

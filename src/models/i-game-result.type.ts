@@ -1,0 +1,1 @@
+export type IGameResultType = 'XWin' | 'OWin' | 'Draw' | null;
