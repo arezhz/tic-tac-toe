@@ -12,33 +12,14 @@ export const clickHandler = (event: Event) => {
             const el = document.getElementById(`square-${colNumber}`);
             el.classList.add('rotate-left');
             boardsList.setBoards('X', colNumber);
-            core.botTurn()
+            core.winCheckHandler()
+            if (!core.gameOver && !core.userTurn && core.gameResult === null) {
+                core.botTurn()
+            }
         }
     }
 }
 
 export const resetHandler = (event: Event) => {
-    if (core.gameOver) {
-        resetEvent();
-        core.gameOver = false;
-    } else {
-        core.gameResultHistory['O'] += 1;
-        resetEvent();
-    }
-    if (core.userStart) {
-        core.userTurn = false;
-        core.botTurn()
-    } else {
-        core.userTurn = true;
-    }
-    core.userStart = !core.userStart;
-}
-
-const resetEvent = () => {
-    const elements = document.querySelectorAll('.game-square');
-    boardsList.boards.map((m, i) => {
-        m.status = null;
-        elements[i].classList.remove('rotate-left')
-        elements[i].classList.remove('rotate-right')
-    })
+    core.resetHandler();
 }

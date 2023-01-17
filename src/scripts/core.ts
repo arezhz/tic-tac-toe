@@ -32,6 +32,7 @@ class Core {
         const boardsLength = boards.filter((f: IBoardsDto) => f.status !== null).length;
 
         setTimeout(() => {
+            this.userTurn = true;
             if (boardsLength <= 1) {
                 if (boards[4].status === null) {
                     this.changeDocument(4);
@@ -63,8 +64,6 @@ class Core {
                     }
                 }
                 this.winCheckHandler();
-                console.log(this.gameOver);
-                console.log(this.gameResult);
                 if (checkCross && this.gameResult === null) {
                     let isNull = false;
                     do {
@@ -83,7 +82,6 @@ class Core {
     changeDocument(index: number) {
         document.getElementById(`square-${index}`).classList.add('rotate-right');
         this.gameBoard.setBoards('O', index);
-        this.userTurn = true;
     }
 
     winCheckHandler() {
@@ -94,10 +92,13 @@ class Core {
                 this.gameResult = this.gameBoard.boards[f[0]].status === 'X' ? 'XWin' : 'OWin';
                 if (this.gameBoard.boards[f[0]].status === 'X') {
                     this.gameResultHistory['X'] += 1;
+                    this.showResult('X', this.gameResultHistory['X'])
                 } else {
                     this.gameResultHistory['O'] += 1;
+                    this.showResult('O', this.gameResultHistory['O'])
                 }
                 this.gameOver = true;
+                this.resetHandler();
             }
         })
 
@@ -107,6 +108,10 @@ class Core {
             this.gameOver = true;
         }
 
+    }
+
+    showResult(player: 'X' | 'O', result: number) {
+        document.getElementById(player === 'X' ? 'result-X' : 'result-O').innerHTML = result.toString();
     }
 
     core(index: number, player: 'X' | 'O') {
@@ -121,6 +126,36 @@ class Core {
             }
         }
         return false;
+    }
+
+
+    resetHandler() {
+        debugger
+        this.gameResult = null;
+        if (this.gameOver) {
+            this.resetEvent();
+            this.gameOver = false;
+        } else {
+            this.gameResultHistory['O'] += 1;
+            this.showResult('O', this.gameResultHistory['O'])
+            this.resetEvent();
+        }
+        if (this.userStart) {
+            this.userTurn = false;
+            this.botTurn()
+        } else {
+            this.userTurn = true;
+        }
+        this.userStart = !this.userStart;
+    }
+
+    private resetEvent() {
+        const elements = document.querySelectorAll('.game-square');
+        this.gameBoard.boards.map((m: IBoardsDto, i: number) => {
+            m.status = null;
+            elements[i].classList.remove('rotate-left')
+            elements[i].classList.remove('rotate-right')
+        })
     }
 }
 
