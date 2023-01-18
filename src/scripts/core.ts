@@ -65,14 +65,13 @@ class Core {
                 }
                 this.winCheckHandler();
                 if (checkCross && this.gameResult === null) {
-                    let isNull = false;
-                    do {
-                        const rndNumber = Math.floor(Math.random() * 8);
-                        if (boards[rndNumber].status === null) {
-                            isNull = true;
-                            this.changeDocument(rndNumber);
+                    for (let i = 0; i < boards.length; i++) {
+                        if (boards[i].status === null) {
+                            this.changeDocument(i);
+                            break;
                         }
-                    } while (!isNull)
+                    }
+                    this.winCheckHandler();
                 }
 
             }
@@ -130,7 +129,6 @@ class Core {
 
 
     resetHandler() {
-        debugger
         this.gameResult = null;
         if (this.gameOver) {
             this.resetEvent();
